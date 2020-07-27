@@ -164,14 +164,20 @@ public class AppCovidService {
 	
 	public Date fechaPicoContagios() {
 		
-		// Se busca el máximo de casos que hay en los datos
-		// Se recupera el objeto DatoCovid resultante
-		// Se recupera la fecha de este objeto
+		// Se agrupan los datos por fecha (clave)
+		// y se suman todos los casos de esa fecha (valor)
 		
-		return leerDatos()
-		          .max((d1, d2) -> (int) (d1.getNum_casos() - d2.getNum_casos()))
-		          .get()
-		          .getFecha();
+		Map<Date, Long> totalPorFecha = leerDatos()
+		                                     .collect(Collectors.groupingBy(d -> d.getFecha(), 
+		                                    		  Collectors.summingLong(d -> d.getNum_casos())));
+		
+		
+		// Se busca el máximo de casos que hay en el mapa de fechas
+		// Se recupera este objeto
+		
+		return totalPorFecha.keySet().stream()
+				                         .max((d1, d2) -> (int) (totalPorFecha.get(d1) - totalPorFecha.get(d2)))
+				                         .get();
 	}
 	
 	// Media de positivos en un día
