@@ -1,0 +1,6 @@
+{
+   "driver": "com.mysql.cj.jdbc.Driver",
+   "cadenaConexion": "jdbc:mysql://192.168.1.222:3306/covid_bd_nacional",
+   "user": "root",
+   "password": "root"
+}
